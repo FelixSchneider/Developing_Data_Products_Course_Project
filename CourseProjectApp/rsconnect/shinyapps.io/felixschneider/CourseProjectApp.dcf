@@ -1,0 +1,12 @@
+name: CourseProjectApp
+title: CourseProjectApp
+username:
+account: felixschneider
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2670842
+bundleId: 3516392
+url: https://felixschneider.shinyapps.io/CourseProjectApp/
+when: 1597417774.32132
+asMultiple: FALSE
+asStatic: FALSE
