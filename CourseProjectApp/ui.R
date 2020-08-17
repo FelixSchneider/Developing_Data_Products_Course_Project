@@ -11,9 +11,12 @@ shinyUI(fluidPage(
         ),
 
         mainPanel(
-            plotOutput("plot1")
+            h3("Regression Plot")
+           ,plotOutput("plot1")
+           ,h3("Regression Formula")
            ,textOutput("formula1")
-           ,dataTableOutput("coef1")
+           ,h3("Regression Coefficients")
+           ,tableOutput("coef1")
         )
     )
 ))
