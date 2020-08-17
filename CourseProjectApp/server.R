@@ -7,7 +7,8 @@ shinyServer(function(input, output) {
         fr <- input$formulaRegressor
         regressors <- ifelse(length(fr)==0,".",paste(fr,collapse="+"))
         fml <- paste("Fertility ~ ",regressors)
-        fit <- lm(formula(fml),swiss)
+        # fit <- lm(formula(fml),swiss)
+        fit <- lm(fml,swiss)
         list(formula=fml,coef=summary(fit)$coefficients)
     })
     
@@ -19,7 +20,6 @@ shinyServer(function(input, output) {
     output$formula1 <- renderText(
         model()$formula
     )
-    # output$coef1 <- renderDataTable({
     output$coef1 <- renderTable(
         model()$coef, rownames=TRUE
     )
