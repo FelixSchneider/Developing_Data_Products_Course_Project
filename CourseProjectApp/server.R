@@ -3,18 +3,24 @@ library(ggplot2)
 
 shinyServer(function(input, output) {
 
-    formula <- reactive({
-        regressors <- paste(input$formulaRegressor,collapse="+")
-        paste("Fertility ~ ",regressors)
+    model <- reactive({
+        fr <- input$formulaRegressor
+        regressors <- ifelse(length(fr)==0,".",paste(fr,collapse="+"))
+        fml <- paste("Fertility ~ ",regressors)
+        fit <- lm(formula(fml),swiss)
+        list(formula=fml,coef=summary(fit)$coefficients)
     })
-    # model <- lm(formula,swiss)
     
     output$plot1 <- renderPlot({
-        ggplot(swiss, aes(.data[[input$plotRegressor]], Fertility)) + geom_point()
-
+        ggplot(swiss, aes(.data[[input$plotRegressor]], Fertility)) + geom_point() #+
+            # geom_abline(slope=model()$fit$coef[2], intercept=model()$fit$coef[1])
     })
+    
     output$formula1 <- renderText({
-        formula()
+        model()$formula
+    })
+    output$coef1 <- renderDataTable({
+        model()$coef
     })
 
 })

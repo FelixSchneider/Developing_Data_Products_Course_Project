@@ -6,13 +6,14 @@ shinyUI(fluidPage(
 
     sidebarLayout(
         sidebarPanel(
-            selectInput("plotRegressor","Regressor",choices=names(swiss)[-1]),
-            checkboxGroupInput("formulaRegressor","Regressor",choices=names(swiss)[-1])
+            selectInput("plotRegressor","Plot Regressor",choices=names(swiss)[-1]),
+            checkboxGroupInput("formulaRegressor","Formula Regressor",choices=names(swiss)[-1])
         ),
 
         mainPanel(
-            plotOutput("plot1"),
-            textOutput("formula1")
+            plotOutput("plot1")
+           ,textOutput("formula1")
+           ,dataTableOutput("coef1")
         )
     )
 ))
