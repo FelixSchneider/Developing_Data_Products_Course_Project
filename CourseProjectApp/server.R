@@ -16,11 +16,12 @@ shinyServer(function(input, output) {
             # geom_abline(slope=model()$fit$coef[2], intercept=model()$fit$coef[1])
     })
     
-    output$formula1 <- renderText({
+    output$formula1 <- renderText(
         model()$formula
-    })
-    output$coef1 <- renderDataTable({
-        model()$coef
-    })
+    )
+    # output$coef1 <- renderDataTable({
+    output$coef1 <- renderTable(
+        model()$coef, rownames=TRUE
+    )
 
 })
