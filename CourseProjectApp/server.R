@@ -13,17 +13,16 @@ shinyServer(function(input, output) {
     
     output$plot1 <- renderPlot({
         pr <- input$plotRegressor
-        ggplot(swiss, aes(.data[[pr]], Fertility)) + geom_point() +
-            # geom_abline(slope=model()$coef["Agriculture","Estimate"],
-            geom_abline(slope=model()$coef[{{pr}},"Estimate"],
-                        intercept=model()$coef["(Intercept)","Estimate"])
+        g <- ggplot(swiss, aes(.data[[pr]], Fertility)) + geom_point()
+        if (pr %in% rownames(model()$coef)) {
+               g + geom_abline(slope=model()$coef[{{pr}},"Estimate"],
+                               intercept=model()$coef["(Intercept)","Estimate"])
+        } else {
+               g
+        }
     })
     
-    output$formula1 <- renderText(
-        model()$formula
-    )
-    output$coef1 <- renderTable(
-        model()$coef, rownames=TRUE
-    )
+    output$formula1 <- renderText(model()$formula)
+    output$coef1 <- renderTable(model()$coef, rownames=TRUE)
 
 })
