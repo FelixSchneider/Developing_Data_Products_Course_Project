@@ -13,12 +13,13 @@ shinyServer(function(input, output) {
     
     output$plot1 <- renderPlot({
         pr <- input$plotRegressor
-        g <- ggplot(swiss, aes(.data[[pr]], Fertility)) + geom_point()
+        g <- ggplot(swiss, aes(.data[[pr]], Fertility)) + geom_point() + geom_smooth(method="lm")
         if (pr %in% rownames(model()$coef)) {
                g + geom_abline(slope=model()$coef[{{pr}},"Estimate"],
-                               intercept=model()$coef["(Intercept)","Estimate"])
+                               intercept=model()$coef["(Intercept)","Estimate"],
+                               color="red",size=1)
         } else {
-               g
+               g 
         }
     })
     
