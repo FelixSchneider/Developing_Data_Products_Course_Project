@@ -1,0 +1,58 @@
+---
+title: "Visualizing Linear Regression Models"
+author: "Felix Schneider"
+date: "8/14/2020"
+output: 
+  slidy_presentation: 
+    incremental: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+```
+
+## The Idea for the App
+- In the *Regression Models* Course, we learned that the coefficients of a linear model for the outcome on a particular regressor depend on whether other regressors are present in the model formula.
+- This App provides the ability
+  * to compose the regression formula by checking the desired regressors in a checkbox group,
+  * view the resulting formula,
+  * view the coefficients of the associated linear model,
+  * and compare the resulting regression line with a smoother line which takes only the plotted regressor into account.
+- Various regressors can be selected for the x-axis of the plot.
+- The data that the App works with come from a data set in the R `datasets` packages, and is called `swiss`.
+
+## Programming Challenges
+There are two locations in the code that posed a challenge during programming in the `server.R`.
+
+The aesthetics mapping in the `ggplot` command
+```{r eval=FALSE, echo=TRUE}
+pr <- input$plotRegressor
+g <- ggplot(swiss, aes(.data[[pr]], Fertility))
+```
+
+The aesthetics mapping in the `geom_abline` command
+```{r eval=FALSE, echo=TRUE}
+pr <- input$plotRegressor
+g + geom_abline(slope=model()$coef[{{pr}},"Estimate"],
+               intercept=model()$coef["(Intercept)","Estimate"],
+               color="red",size=1)
+```
+
+
+## Tidy Evaluation, *Env*-Variables and *Data*-Variables
+- The term *variable* has two different meanings when programming in R.
+  a) an **object** that is created with the `<-` operator that contains variable contents. These are so called **env**-variables since they are "defined" in an environment.
+  b) a **column** in a data frame that is usually referred to with the `$` character (`dataframe$variable`). These are so called **data**-variables since they are "defined" by the data.
+- The `aes()` command requires a *data*-variable, but the code wants to provide that in an *env*-variable. This is solved with the `.data[[<variable>]]` construct.
+- The `geom_abline()` command requires the value of an *env*-variable in a function call parameter. This is solved with the `{{<variable>}}` construct.
+
+## Publish the App to shinyapps.io
+The following code is executed during the knit process and reproducibly deploys the App to shinyapps.io.
+```{r deploy_app, echo=TRUE, comment="", cache=TRUE}
+library(rsconnect)
+deployApp("CourseProjectApp/")
+```
+
+
+
